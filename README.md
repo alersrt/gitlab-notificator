@@ -8,6 +8,6 @@ Properties of this app stored in `properties.json` file and have such contetn:
     "header.token" : {
         "PRIVATE-TOKEN": "<Private token for API>"
     },
-    "timeout" : <Timeout for checs in seconds>
+    "timeout" : "<Timeout for checs in seconds>"
 }
 ```

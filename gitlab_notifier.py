@@ -17,9 +17,7 @@ URL_API = config['url.api']
 # Token for GitLab
 HEADERS = config['header.token']
 # Timeout in seconds
-timeout = config['timeout']
-
-print(URL_API)
+timeout = int(config['timeout'])
 
 Notify.init("GitLab Notifier")
 

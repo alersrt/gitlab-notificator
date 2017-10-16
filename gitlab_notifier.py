@@ -1,25 +1,23 @@
 #!/usr/bin/python
 
-import os
-import sys
+import json
+import time
 from datetime import datetime
 from datetime import timedelta
-import time
-import requests
-import configparser
 
 import gi
+import requests
+
 gi.require_version('Notify', '0.7')
 from gi.repository import GdkPixbuf, Notify
 
-config = configparser.ConfigParser()
-config.read('gitlab.properties')
+config = json.loads(open('properties.json').read())
 # URL API for GitLab
-URL_API = config['GitLab']['url.api']
+URL_API = config['url.api']
 # Token for GitLab
-HEADERS = {config['GitLab']['header.token']}
+HEADERS = config['header.token']
 # Timeout in seconds
-timeout = config['GitLab']['timeout']
+timeout = config['timeout']
 
 print(URL_API)
 
@@ -63,6 +61,4 @@ while True:
             if user_avatar != None:
                 n.set_image_from_pixbuf(user_avatar.get_pixbuf())
             n.show()
-            
-    print(datetime.now()-t1)
     time.sleep(timeout)

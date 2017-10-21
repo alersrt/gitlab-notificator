@@ -7,17 +7,17 @@ from datetime import timedelta
 
 import gi
 import requests
-
+gi.require_version('GdkPixbuf', '2.0')
 gi.require_version('Notify', '0.7')
 from gi.repository import GdkPixbuf, Notify
 
 config = json.loads(open('properties.json').read())
 # URL API for GitLab
-URL_API = config['url.api']
+URL_API = config['url']+'/api/v4/'
 # Token for GitLab
 HEADERS = config['header.token']
 # Timeout in seconds
-timeout = int(config['timeout'])
+TIMEOUT = int(config['timeout'])
 
 Notify.init("GitLab Notifier")
 
@@ -29,7 +29,7 @@ while True:
     
         for event in events:
             created_at = event['created_at'] if event['created_at'] is not None else '2000-01-01T00:00:00.000Z'
-            if datetime.utcnow() - datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%fZ") > timedelta(seconds=(timeout+5)):
+            if datetime.utcnow() - datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%fZ") > timedelta(seconds=(TIMEOUT+5)):
                 continue
             action_name     = event['action_name'] if event['action_name'] != None else ''
             author_username = event['author_username'] if event['author_username'] != None else ''
@@ -59,4 +59,4 @@ while True:
             if user_avatar != None:
                 n.set_image_from_pixbuf(user_avatar.get_pixbuf())
             n.show()
-    time.sleep(timeout)
+    time.sleep(TIMEOUT)

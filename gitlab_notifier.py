@@ -11,6 +11,39 @@ gi.require_version('GdkPixbuf', '2.0')
 gi.require_version('Notify', '0.7')
 from gi.repository import GdkPixbuf, Notify
 
+
+class PushData:
+    action = ""
+    ref_type = ""
+    ref = ""
+    
+    
+class Event:
+    created_at = ""
+    action_name = ""
+    author_username = ""
+    target_type = ""
+    target_title = ""
+    
+    
+class Project:
+    events = []
+    
+
+class GitLabAPI:
+    def __init__(self, url, token, timeout):
+        self.URL_API = url + '/api/v4/'
+        self.HEADERS = {"PRIVATE-TOKEN": token}
+        self.TIMEOUT = timeout
+
+    def projets(self):
+        return requests.get(URL_API + 'projects', headers=HEADERS).json()
+    
+    def events(self, project_id):
+        return requests.get(URL_API+'projects/'+project_id+'/events', headers=HEADERS).json()
+   
+     
+        
 config = json.loads(open('properties.json').read())
 # URL API for GitLab
 URL_API = config['url']+'/api/v4/'

@@ -29,7 +29,9 @@ class Event:
 class Project:
     events = []
     
-
+    def __init__(self, id):
+        self.events = requests.get(URL_API+'projects/'+id+'/events', headers=HEADERS).json()
+    
 class GitLabAPI:
     def __init__(self, url, token, timeout):
         self.URL_API = url + '/api/v4/'
@@ -37,10 +39,16 @@ class GitLabAPI:
         self.TIMEOUT = timeout
 
     def projets(self):
-        return requests.get(URL_API + 'projects', headers=HEADERS).json()
+        projects = []
+        temp_projects = requests.get(URL_API + 'projects', headers=HEADERS).json()
+        for prj in temp_projects:
+            project = Project(prj['id'])
+            project.events = prj['events']
+            projects.append(project)
+        return projects
     
     def events(self, project_id):
-        return requests.get(URL_API+'projects/'+project_id+'/events', headers=HEADERS).json()
+        return
    
      
         
